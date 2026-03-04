@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Piano di Studio — Inglese B1→C1</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --paper: #f5f0e8;
+    --cream: #ede8dc;
+    --accent: #c8502a;
+    --gold: #d4a843;
+    --sage: #6b8f71;
+    --muted: #8a8070;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    padding: 40px 20px;
+    background-image: 
+      radial-gradient(circle at 90% 10%, rgba(200,80,42,0.06) 0%, transparent 50%),
+      radial-gradient(circle at 10% 90%, rgba(107,143,113,0.07) 0%, transparent 50%);
+  }
+
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  /* HEADER */
+  .header {
+    text-align: center;
+    padding: 40px 0 50px;
+    position: relative;
+  }
+
+  .header::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: var(--accent);
+    margin: 24px auto 0;
+  }
+
+  .eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.1s;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 6vw, 3.8rem);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -1px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.25s;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .subtitle {
+    margin-top: 16px;
+    font-size: 15px;
+    color: var(--muted);
+    font-weight: 300;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.4s;
+  }
+
+  /* LEVEL BAR */
+  .level-section {
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 16px;
+    padding: 28px 32px;
+    margin-bottom: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.55s;
+  }
+
+  .level-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  .level-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+  }
+
+  .progress-track {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .progress-labels {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: rgba(245,240,232,0.5);
+    margin-bottom: 8px;
+  }
+
+  .progress-bar {
+    height: 8px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--accent));
+    border-radius: 99px;
+    width: 0%;
+    transition: width 1.4s cubic-bezier(0.4,0,0.2,1) 1s;
+  }
+
+  /* WEEK GRID */
+  .week-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .week-title span {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .week-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    margin-bottom: 36px;
+  }
+
+  .day-card {
+    background: white;
+    border-radius: 12px;
+    padding: 14px 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 2px solid transparent;
+    position: relative;
+    opacity: 0;
+    animation: fadeUp 0.4s ease forwards;
+    box-shadow: 0 2px 8px rgba(26,26,46,0.06);
+  }
+
+  .day-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(26,26,46,0.12);
+  }
+
+  .day-card.completed {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--paper);
+  }
+
+  .day-card.completed .day-icon {
+    opacity: 1;
+  }
+
+  .day-card.active {
+    border-color: var(--accent);
+  }
+
+  .day-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .day-card.completed .day-name { color: rgba(245,240,232,0.6); }
+
+  .day-emoji {
+    font-size: 1.4rem;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .day-focus {
+    font-size: 9px;
+    font-weight: 500;
+    line-height: 1.3;
+    color: var(--ink);
+  }
+
+  .day-card.completed .day-focus { color: var(--paper); }
+
+  .day-icon {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    font-size: 10px;
+    opacity: 0;
+  }
+
+  .day-time {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    color: var(--gold);
+    margin-top: 5px;
+  }
+
+  /* TASKS */
+  .tasks-section {
+    background: white;
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 36px;
+    box-shadow: 0 2px 16px rgba(26,26,46,0.06);
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.8s;
+  }
+
+  .tasks-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+
+  .tasks-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+  }
+
+  .tasks-counter {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .task-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--cream);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .task-item:last-child { border-bottom: none; }
+
+  .task-item:hover { padding-left: 6px; }
+
+  .task-check {
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--cream);
+    border-radius: 6px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+  }
+
+  .task-item.done .task-check {
+    background: var(--sage);
+    border-color: var(--sage);
+    color: white;
+  }
+
+  .task-item.done .task-text {
+    text-decoration: line-through;
+    color: var(--muted);
+  }
+
+  .task-content { flex: 1; }
+
+  .task-text {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 4px;
+    transition: color 0.2s;
+  }
+
+  .task-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    display: flex;
+    gap: 12px;
+  }
+
+  .task-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 99px;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .tag-vocab { background: rgba(212,168,67,0.15); color: #9a7520; }
+  .tag-grammar { background: rgba(200,80,42,0.12); color: var(--accent); }
+  .tag-listening { background: rgba(107,143,113,0.15); color: #4a7050; }
+  .tag-speaking { background: rgba(26,26,46,0.1); color: var(--ink); }
+  .tag-reading { background: rgba(100,100,200,0.1); color: #4444aa; }
+
+  /* TIPS */
+  .tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-bottom: 36px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 1s;
+  }
+
+  .tip-card {
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 14px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tip-card::before {
+    content: attr(data-num);
+    position: absolute;
+    top: -10px;
+    right: 16px;
+    font-family: 'Playfair Display', serif;
+    font-size: 5rem;
+    font-weight: 900;
+    color: rgba(255,255,255,0.05);
+    line-height: 1;
+  }
+
+  .tip-icon { font-size: 1.5rem; margin-bottom: 12px; }
+
+  .tip-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .tip-text {
+    font-size: 12px;
+    line-height: 1.6;
+    color: rgba(245,240,232,0.7);
+    font-weight: 300;
+  }
+
+  /* STATS */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.7s;
+  }
+
+  .stat-box {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(26,26,46,0.06);
+  }
+
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--accent);
+    display: block;
+  }
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 4px;
+    display: block;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .week-grid { grid-template-columns: repeat(4, 1fr); }
+    .level-section { flex-direction: column; align-items: flex-start; }
+    .stats-row { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <p class="eyebrow">Il tuo piano personalizzato</p>
+    <h1>Inglese<br><em>B1 → C1</em></h1>
+    <p class="subtitle">45 minuti al giorno · Progresso costante · Risultati concreti</p>
+  </div>
+
+  <!-- LEVEL -->
+  <div class="level-section">
+    <div>
+      <div class="level-label">Livello attuale</div>
+      <div class="level-title">B1–B2 Intermedio</div>
+    </div>
+    <div class="progress-track">
+      <div class="progress-labels"><span>A1</span><span>B1</span><span>B2</span><span>C1</span><span>C2</span></div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-box">
+      <span class="stat-num">45'</span>
+      <span class="stat-label">Al giorno</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-num" id="streakNum">0</span>
+      <span class="stat-label">Giorni streak</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-num" id="doneNum">0</span>
+      <span class="stat-label">Task completati</span>
+    </div>
+  </div>
+
+  <!-- WEEK -->
+  <div class="week-title">
+    Settimana tipo <span>/ clicca per segnare</span>
+  </div>
+  <div class="week-grid" id="weekGrid"></div>
+
+  <!-- DAILY TASKS -->
+  <div class="tasks-section">
+    <div class="tasks-header">
+      <h2>Routine Giornaliera</h2>
+      <span class="tasks-counter" id="tasksCounter">0 / 5 completati</span>
+    </div>
+    <div id="tasksList"></div>
+  </div>
+
+  <!-- TIPS -->
+  <div class="tips-grid">
+    <div class="tip-card" data-num="1">
+      <div class="tip-icon">🎧</div>
+      <div class="tip-title">Input comprensibile</div>
+      <div class="tip-text">Ascolta contenuti leggermente sopra il tuo livello: podcast come BBC 6 Minute English o TED talks con sottotitoli.</div>
+    </div>
+    <div class="tip-card" data-num="2">
+      <div class="tip-icon">🃏</div>
+      <div class="tip-title">Spaced Repetition</div>
+      <div class="tip-text">Usa Anki per il vocabolario. 10 minuti al giorno di flashcard superano ore di studio passivo.</div>
+    </div>
+    <div class="tip-card" data-num="3">
+      <div class="tip-icon">✍️</div>
+      <div class="tip-title">Output attivo</div>
+      <div class="tip-text">Scrivi 3 frasi al giorno con le nuove parole. Puoi chattare con me in inglese per esercitarti!</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const days = [
+    { name: 'Lun', emoji: '📖', focus: 'Vocabolario', time: '15+10+10+10' },
+    { name: 'Mar', emoji: '🎧', focus: 'Listening', time: '20+15+10' },
+    { name: 'Mer', emoji: '✏️', focus: 'Grammar', time: '20+15+10' },
+    { name: 'Gio', emoji: '🗣️', focus: 'Speaking', time: '15+20+10' },
+    { name: 'Ven', emoji: '📰', focus: 'Reading', time: '20+15+10' },
+    { name: 'Sab', emoji: '🎬', focus: 'Film/Serie', time: '30+15' },
+    { name: 'Dom', emoji: '🔁', focus: 'Revisione', time: '20+15+10' },
+  ];
+
+  const tasks = [
+    { text: 'Anki — ripasso vocabolario', meta: '10 min', tag: 'vocab', tagLabel: 'Vocabolario' },
+    { text: 'Ascolto: BBC 6 Minute English', meta: '10 min', tag: 'listening', tagLabel: 'Listening' },
+    { text: 'Lettura: 1 articolo con dizionario', meta: '10 min', tag: 'reading', tagLabel: 'Reading' },
+    { text: 'Grammar: 1 esercizio mirato', meta: '10 min', tag: 'grammar', tagLabel: 'Grammar' },
+    { text: 'Scrivi 3 frasi con nuove parole', meta: '5 min', tag: 'speaking', tagLabel: 'Output' },
+  ];
+
+  // Storage helpers
+  function load(key) { try { return JSON.parse(localStorage.getItem(key)); } catch(e) { return null; } }
+  function save(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch(e) {} }
+
+  let completedDays = load('completedDays') || [];
+  let completedTasks = load('completedTasks') || [];
+
+  function updateStats() {
+    document.getElementById('streakNum').textContent = completedDays.length;
+    document.getElementById('doneNum').textContent = completedTasks.length;
+    document.getElementById('tasksCounter').textContent = completedTasks.length + ' / ' + tasks.length + ' completati oggi';
+  }
+
+  // Render week
+  const grid = document.getElementById('weekGrid');
+  days.forEach((d, i) => {
+    const card = document.createElement('div');
+    card.className = 'day-card' + (completedDays.includes(i) ? ' completed' : '');
+    card.style.animationDelay = (0.5 + i * 0.07) + 's';
+    card.innerHTML = `
+      <div class="day-name">${d.name}</div>
+      <span class="day-emoji">${d.emoji}</span>
+      <div class="day-focus">${d.focus}</div>
+      <div class="day-time">45 min</div>
+      <span class="day-icon">✓</span>
+    `;
+    card.addEventListener('click', () => {
+      if (completedDays.includes(i)) {
+        completedDays = completedDays.filter(x => x !== i);
+        card.classList.remove('completed');
+      } else {
+        completedDays.push(i);
+        card.classList.add('completed');
+      }
+      save('completedDays', completedDays);
+      updateStats();
+    });
+    grid.appendChild(card);
+  });
+
+  // Render tasks
+  const list = document.getElementById('tasksList');
+  tasks.forEach((t, i) => {
+    const item = document.createElement('div');
+    item.className = 'task-item' + (completedTasks.includes(i) ? ' done' : '');
+    item.innerHTML = `
+      <div class="task-check">${completedTasks.includes(i) ? '✓' : ''}</div>
+      <div class="task-content">
+        <div class="task-text">${t.text}</div>
+        <div class="task-meta">
+          <span>⏱ ${t.meta}</span>
+          <span class="task-tag tag-${t.tag}">${t.tagLabel}</span>
+        </div>
+      </div>
+    `;
+    item.addEventListener('click', () => {
+      const check = item.querySelector('.task-check');
+      if (completedTasks.includes(i)) {
+        completedTasks = completedTasks.filter(x => x !== i);
+        item.classList.remove('done');
+        check.textContent = '';
+      } else {
+        completedTasks.push(i);
+        item.classList.add('done');
+        check.textContent = '✓';
+      }
+      save('completedTasks', completedTasks);
+      updateStats();
+    });
+    list.appendChild(item);
+  });
+
+  updateStats();
+
+  // Animate progress bar (B1 = ~50%)
+  setTimeout(() => {
+    document.getElementById('progressFill').style.width = '52%';
+  }, 200);
+</script>
+</body>
+</html>
